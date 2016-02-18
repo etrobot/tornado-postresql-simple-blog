@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% end %}
+
+{% block body %}
+    <section>
+      <ul class="news" id="newsList">
+    {% for entry in entries %}
+      <!--<li class="newslist fl">-->
+        <!--<div class="title"><a target="_blank" href="/entry/{{ entry.slug }}">{{ entry.title }}</a></div>-->
+        <!--<div class="date">{{ locale.format_date(entry.published, full_format=True, shorter=True) }}</div>-->
+      <!--</li>-->
+      <li class="newslist fl">
+          <a target="_blank" href="/entry/{{ entry.slug }}">
+            <span class="img-box"><img src="{{ entry.thumbnail }}"></span>
+            <div class="newsbox">
+              <!--<img class="avatar" width="62" height="62" src="http://ossweb-img.qq.com/images/tgideas/web201312/avatars/u9ad8u9732u6d01.png">-->
+              <!--<p class="newsauthor ffam m0a">-->
+                <!--<strong class="newsat">BY</strong>{{ entry.author_id }}-->
+                <!--<strong class="newsat">IN</strong><span>{{ entry.topicid }}</span>-->
+              <!--</p>-->
+              <!--<dl class="newsvote">-->
+                <!--<dt class="htxt fl">赞</dt>-->
+                <!--<dd class="newsscore nvi1 spr" id="n_354416">21</dd>-->
+                <!--<dt class="htxt fl">评论</dt>-->
+                <!--<dd class="newsscore nvi2 spr"><span id="c_1110">25</span></dd>-->
+              <!--</dl>-->
+            </div>
+            <div class="plr10 intro">
+              <h2 class="newstitle ffam">{{ entry.title }}</h2>
+              <p class="newsintro">{{ entry.excerpt}}</p>
+            </div>
+          </a>
+      </li>
+              {% end %}
+  </ul>
+    </section>
+    <nav>
+      <ul class="pager">
+        <li class="pagerlist fr"><a href="javascript:void(0)" class="pagerlink pl2 spr" id="pageNext"><span class="hidden">下一页</span></a></li>
+        <li class="pagerlist fr"><a href="javascript:void(0)" class="pagerlink pl1 spr" id="pagePrev"><span class="hidden">上一页</span></a></li>
+      </ul>
+    </nav>
+
+    <footer class="footer ffam">
+      <p>Designed by Frank.Lin</p>
+      <p>Copyright &copy; 2016. All Rights Reserved.</p>
+    </footer>
+
+{% end %}

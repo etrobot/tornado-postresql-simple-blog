@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:wb="http://open.weibo.com/wb">
+  <head>
+      <meta charset="utf-8">
+      <meta name="robots" content="all" />
+      <meta name="Copyright" content="Copyright (c) Frank.Lin" />
+      <meta name="Description" content="" />
+      <meta name="Keywords" content="speed painting, concept art,sci-fi" />
+      <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <title>{{ escape(handler.settings["blog_title"]) }}</title>
+    <link rel="stylesheet" href="{{ static_url("css.css") }}" type="text/css">
+    <link rel="alternate" href="/feed" type="application/atom+xml" title="{{ escape(handler.settings["blog_title"]) }}">
+    {% block head %}{% end %}
+  </head>
+  <body>
+      <section id="topNavBox" class="navbox fl">
+        <nav>
+          <a href="javascript:;">Zhicafe.com</a>
+          <a href="javascript:;" class="expan-menu" id="expanMenu"></a>
+          <ul class="navmain" id="navMenu">
+            <li><a href="/">主页</a></li>
+            {% if current_user %}
+            <li><a href="/compose">写文章</a></li>
+            {% end %}
+            <li><a href="/?tId=1">杂谈</a></li>
+            <li class="tlnk tag-type"><a href="http://tgideas.qq.com/#1">ABOUT</a></li>
+          </ul>
+        </nav>
+      </section>
+    <!--<div id="body">-->
+      <!--<div id="header">-->
+        <!--<div style="float:right">
+          {% if current_user %}
+            <a href="/compose">{{ _("New post") }}</a> -
+            <a href="/auth/logout?next={{ url_escape(request.uri) }}">{{ _("Sign out") }}</a>
+          {% else %}
+            {% raw _('<a href="%(url)s">Sign in</a> to compose/edit') % {"url": "/auth/login?next=" + url_escape(request.uri)} %}
+          {% end %}
+        </div>-->
+        <!--<h1><a href="/">{{ escape(handler.settings["blog_title"]) }}</a></h1>-->
+      <!--</div>-->
+    <section class="main">
+      {% block body %}{% end %}
+    <!--</div>-->
+    {% block bottom %}{% end %}
+    </section>
+  <script>
+(function (window) {
+    function getArgs() {
+     var args = new Object( );
+     var query = location.search.substring(1);      // Get query string
+     var pairs = query.split("&");                  // Break at ampersand
+     for(var i = 0; i < pairs.length; i++) {
+         var pos = pairs[i].indexOf('=');           // Look for "name=value"
+         if (pos == -1) continue;                   // If not found, skip
+         var argname = pairs[i].substring(0,pos); // Extract the name
+         var value = pairs[i].substring(pos+1);     // Extract the value
+         value = decodeURIComponent(value);         // Decode it, if needed
+         args[argname] = value;                     // Store as a property
+     }
+     return args;                                   // Return the object
+    }
+
+    var ndsp = {
+        fn: {},
+        util: {},
+        init: function () { }
+    };
+
+    //addEvent
+    var addEvent = function (obj, evt, fn) {
+        if (obj.addEventListener) obj.addEventListener(evt, fn, false);
+        else if (obj.attachEvent) obj.attachEvent('on' + evt, fn);
+    };
+
+    ndsp.util.expanMenu = function () {
+        var collapse = document.getElementById('expanMenu');
+        var nav = document.getElementById('navMenu');
+        if (!String.prototype.trim) {
+            String.prototype.trim = function () { return this.replace(/(^\s*)|(\s*$)/g, ""); }
+        };
+        function classToggle(element, tclass) {
+            var classes = element.className,
+                pattern = new RegExp(tclass);
+            var hasClass = pattern.test(classes);
+            classes = hasClass ? classes.replace(pattern, '') : classes + ' ' + tclass;
+            element.className = classes.trim();
+        };
+        addEvent(collapse, 'click', function () {
+            classToggle(nav, 'expan');
+            classToggle(collapse, 'active');
+            return false;
+        })
+    };
+
+    currentHost = window.location.protocol+"//"+window.location.host+"/?"
+    //分页添加事件
+    currentPageNum = parseInt(getArgs().p);
+    tId = (getArgs().tId)?("&tId="+getArgs().tId):'';
+    nextPageNum = currentPageNum+1;
+    prevPageNum = currentPageNum-1;
+    ndsp.util.jumpPage = function() {
+        var btnNext = document.getElementById("pageNext"),
+        btnPrev = document.getElementById("pagePrev");
+        addEvent(btnNext, 'click',
+        function() {
+            if (!nextPageNum) {
+                 window.location = currentHost+"p=2";
+                 return;
+            }
+            window.location = currentHost+"p="+nextPageNum+tId;
+        });
+        addEvent(btnPrev, 'click',
+        function() {
+            if (!prevPageNum) {
+                return;
+            }
+            window.location =  currentHost+"p="+prevPageNum+tId;
+        });
+    };
+    
+    ndsp.init = function () {
+        ndsp.util.expanMenu();
+        ndsp.util.jumpPage();
+    }
+
+    ndsp.init();
+
+})(window);
+
+
+</script>
+
+  </body>
+</html>
