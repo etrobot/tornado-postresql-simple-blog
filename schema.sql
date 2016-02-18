@@ -24,6 +24,40 @@
 -- ALTER DATABASE CHARACTER SET "utf8";
 SET client_encoding = 'UTF8';
 
+SET client_encoding = 'UTF8';
+
+DROP TABLE IF EXISTS authors;
+CREATE TABLE authors (
+    id SERIAL PRIMARY KEY,
+    level INT NOT NULL,
+    credits INT NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    hashed_password VARCHAR(100) NOT NULL,
+    intro TEXT
+);
+
+DROP TABLE IF EXISTS entries;
+CREATE TABLE entries (
+    id SERIAL PRIMARY KEY,
+    hide BOOLEAN,
+    link TEXT,
+    thumbnail TEXT,
+    excerpt TEXT,
+    topicId INT NOT NULL,
+    author_id INT NOT NULL REFERENCES authors(id),
+    author VARCHAR(100),
+    feedback INT,
+    slug VARCHAR(100) NOT NULL UNIQUE,
+    title VARCHAR(512),
+    terms VARCHAR(100),
+    markdown TEXT,
+    html TEXT,
+    tags VARCHAR(100),
+    published TIMESTAMP NOT NULL,
+    updated TIMESTAMP NOT NULL,
+);
+
 DROP TABLE IF EXISTS tags;
 CREATE TABLE tags (
     id SERIAL PRIMARY KEY,
